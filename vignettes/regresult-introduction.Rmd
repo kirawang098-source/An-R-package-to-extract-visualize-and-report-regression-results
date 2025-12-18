@@ -14,11 +14,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+##installation 
+
+installation part can see the read.me file in github https://github.com/kirawang098-source/An-R-package-to-extract-visualize-and-report-regression-results
+
+
 ```{r setup}
 library(regresult)
 
 ```
-
 
 ## Overview
 
@@ -100,7 +105,7 @@ reg_plot(glm_model)
 ```
 
 
-# Generate Word report
+### Generate Word report
 ```{r, eval = FALSE}
 reg_report(glm_model, "reg_result_glm.docx")
 
