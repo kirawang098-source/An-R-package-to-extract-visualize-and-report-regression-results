@@ -20,21 +20,27 @@ library(regresult)
 ```
 
 
-```markdown
 ## Overview
 
 `regresult` is a lightweight R package designed to help users extract,
 visualize, and report regression results from commonly used models such
-as `lm()` and `glm()`.
+as `lm()` and `glm()`. 
 
-The package provides:
-- A tidy coefficient extraction function
-- A publication-ready coefficient plot
-- An automated Word report combining tables and figures
 
-## Quick start
+## Motivation and background
+While many R packages exist for regression analysis, such as broom for tidying regression outputs, ggplot2 for visualization, and flextable/officer for Word reporting, users often need to combine multiple packages manually to produce publication-ready results. This can be time-consuming and error-prone, especially when performing repetitive analyses across different datasets.
 
-We illustrate the basic workflow using a linear regression model
+Compared to existing packages, regresult can:
+
+1. extract the regression coefficient/data frame. Existing packages like broom::tidy() provide coefficients, standard errors, and p-values, but users still need to manually merge these outputs into readable tables. reg_extract() automates this process.
+
+2. provide coefficient graph. While ggplot2 can create coefficient plots, users must manually preprocess data and specify plot aesthetics. reg_plot() generates forest-style coefficient plots automatically with 95% confidence intervals, it may save some time. after seeing the basid graph result, user can choose to build more customerized plot with ggplot2.
+
+3. generate report word file. Creating reproducible reports combining tables and figures usually requires integrating multiple packages (eg. flextable, officer) and writing custom scripts. reg_report() automatically produces a Word document containing both regression tables.
+
+
+## Example1: Linear model by metcars dataset
+First, we illustrate the basic workflow using a linear regression model
 fitted on the built-in `mtcars` dataset.
 
 ```{r}
@@ -71,6 +77,38 @@ reg_report(lm_model, "reg_result.docx")
 
 ```
 
+## Example 2: Generalized Linear Model (GLM)
+To demonstrate the flexibility of `regresult`, we also show how to use it with a generalized linear model (GLM). 
+Here we use a logistic regression model to predict the transmission type (`am`) in the `mtcars` dataset.
+
+### Fit a logistic regression model
+
+```{r}
+glm_model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+```
+
+### Extract regression coefficients
+
+```{r}
+reg_extract(glm_model)
+```
+
+### Visualize coefficients
+
+```{r}
+reg_plot(glm_model)
+```
+
+
+# Generate Word report
+```{r, eval = FALSE}
+reg_report(glm_model, "reg_result_glm.docx")
+
+```
+
+The `regresult` package successfully handles logistic regression models.
+
+
 ### Conclusion
 
 The `regresult` package provides a streamlined workflow for analyzing regression models. 
@@ -80,12 +118,13 @@ This helps researchers, data analysts, and students reduce repetitive coding and
 
 ### Limitations and Future Work
 
-Currently, `regresult` is primarily designed for linear models fitted with `lm()`. Support for generalized linear models (`glm()`), mixed-effects models, and other regression frameworks could be added in the future. 
+Currently, `regresult` is primarily designed for linear models fitted with `lm()` `glm()`. Support for mixed-effects models, and other regression frameworks could be added in the future. 
 
-Additionally, the Word report template is currently fixed, for research paper it may be better to present significant level(with stars), adjusted r square, observation number and F value; Future versions could allow users to customize table formatting, plot aesthetics, and reporting templates. If using mixed effect/fixed effect, future version should add addition column for YES/NO for fixed effect.
+Additionally, the Word report template is currently fixed, for research paper it may be better to present significant level(with stars), adjusted r square, observation number and F value; Future versions could allow users to customize table formatting, plot aesthetics, and reporting templates. Ideally,'reg_report' should provide example templates in the package for common journal styles. If using mixed effect/fixed effect, future version should add addition column for YES/NO for fixed effect.
 
-For reg_plot, we only use forest style plot for linear regression coeffient.It helps us to see the result. But we can still add model diagnosis function to investigate data and model more,for example residual analysis/Cook-D distance/correlation matrix/test VIF/normality assumption test.
-.
+For 'reg_plot', we only use forest style plot for linear regression coeffient.It helps us to see the result. But we can still add model diagnosis function to investigate data and model more,for example residual analysis/Cook-D distance/correlation matrix/test VIF/normality assumption test.
+
+These concrete improvements will increase the package's flexibility for a wider range of regression analyses, while keeping the workflow streamlined for users
 
 
 
