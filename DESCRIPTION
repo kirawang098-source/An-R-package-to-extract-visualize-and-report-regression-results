@@ -1,0 +1,25 @@
+Package: regresult
+Title: Extract and Visualize Regression Results
+Version: 0.0.0.1000
+Authors@R: 
+  person(
+    given="Mengting", 
+    family="Wang",
+    email="mw193@iu.edu", 
+    role=c("aut", "cre"),
+  )
+Description: This package provides functions to extract, summarize,
+ and visualize regression results from lm, glm, and ivreg models.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports: 
+    broom,
+    flextable,
+    ggplot2,
+    officer
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

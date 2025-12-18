@@ -1,0 +1,92 @@
+---
+title: "regresult-introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{regresult-introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(regresult)
+
+```
+
+
+```markdown
+## Overview
+
+`regresult` is a lightweight R package designed to help users extract,
+visualize, and report regression results from commonly used models such
+as `lm()` and `glm()`.
+
+The package provides:
+- A tidy coefficient extraction function
+- A publication-ready coefficient plot
+- An automated Word report combining tables and figures
+
+## Quick start
+
+We illustrate the basic workflow using a linear regression model
+fitted on the built-in `mtcars` dataset.
+
+```{r}
+lm_model <- lm(mpg ~ wt + hp, data = mtcars)
+```
+
+### Extract regression coefficients
+
+The `reg_extract()` function returns a tidy data frame of regression
+coefficients, standard errors, test statistics, and p-values.
+
+```{r}
+reg_extract(lm_model)
+```
+
+
+### Visualize coefficients
+
+The `reg_plot()` function creates a forest-style plot with 95% confidence
+intervals for regression coefficients.
+
+```{r}
+reg_plot(lm_model)
+```
+
+
+### Generate a Word report
+
+The `reg_report()` function automatically generates a Word document
+containing both a coefficient table and a visualization.
+
+```{r, eval = FALSE}
+reg_report(lm_model, "reg_result.docx")
+
+```
+
+### Conclusion
+
+The `regresult` package provides a streamlined workflow for analyzing regression models. 
+By integrating coefficient extraction, visualization, and automated Word reporting, it simplifies the process of generating reproducible and publication-ready regression results. 
+This helps researchers, data analysts, and students reduce repetitive coding and improve efficiency in reporting statistical analyses.
+
+
+### Limitations and Future Work
+
+Currently, `regresult` is primarily designed for linear models fitted with `lm()`. Support for generalized linear models (`glm()`), mixed-effects models, and other regression frameworks could be added in the future. 
+
+Additionally, the Word report template is currently fixed, for research paper it may be better to present significant level(with stars), adjusted r square, observation number and F value; Future versions could allow users to customize table formatting, plot aesthetics, and reporting templates. If using mixed effect/fixed effect, future version should add addition column for YES/NO for fixed effect.
+
+For reg_plot, we only use forest style plot for linear regression coeffient.It helps us to see the result. But we can still add model diagnosis function to investigate data and model more,for example residual analysis/Cook-D distance/correlation matrix/test VIF/normality assumption test.
+.
+
+
+
+
